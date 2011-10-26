@@ -1,6 +1,6 @@
 = BitField
 
- This C extensions wraps boost::dynamic_bitset and makes it available
+ This C extension wraps boost::dynamic_bitset and makes it available
 as a native Ruby class. The bitset behaves like an an array allowing
 only values of 0 and 1. Using this extension is easy:
 
@@ -8,8 +8,8 @@ only values of 0 and 1. Using this extension is easy:
     puts b              # Prints '0000000000' where the last bit is b[0]
     b[0..3] = Array.new(4) {1}  # Sets bits 0 to 3 to 1
     
-Enjoy :)
-
+Note that in contrast to the Ruby Array behaviour the BitField does not
+automatically grow in size.
 
 = Licence
-Copyright(c) 2011 Fabian Becker, released under 3-clause BSD licence.
+Copyright(c) 2011 Fabian Becker, released under 2-clause BSD licence.
