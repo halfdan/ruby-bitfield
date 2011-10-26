@@ -1,22 +1,30 @@
 require 'rake/extensiontask'
 
-spec = Gem::Specification.new do |s|
-  s.name              = 'bitfield'
-  s.platform          = Gem::Platform::RUBY
-  s.extensions        = FileList["ext/**/extconf.rb"]
-  s.version           = '0.9.2'
-  s.date              = "2011-10-26"
-  s.author            = 'Fabian Becker'
-  s.email             = 'halfdan@xnorfz.de'
-  s.homepage          = 'https://github.com/halfdan/ruby-bitfield/'
-  s.summary           = "Wraps boost::dynamic_bitset and makes it available as a Ruby class 
+spec = Gem::Specification.new do |spec|
+  spec.name              = 'bitfield'
+  spec.platform          = Gem::Platform::RUBY
+  spec.extensions        = FileList["ext/**/extconf.rb"]
+  spec.version           = '0.9.3'
+  spec.date              = Time.now.strftime "%Y-%m-%d"
+  spec.author            = 'Fabian Becker'
+  spec.email             = 'halfdan@xnorfz.de'
+  spec.homepage          = 'https://github.com/halfdan/ruby-bitfield/'
+  spec.summary           = "Wraps boost::dynamic_bitset and makes it available as a Ruby class 
                          for fast operations on a bitset"
 
-  s.description       = 'This C extension wraps boost::dynamic_bitset and makes it available
+  spec.description       = 'This C extension wraps boost::dynamic_bitset and makes it available
                          as a native Ruby class. The bitset behaves like an an array allowing
                          only values of 0 and 1.'
-  
-  s.files = FileList["LICENSE", "README.rdoc", "Rakefile", "ext/**/*.cpp", "ext/**/*.hpp"]
+
+  spec.required_ruby_version = '>= 1.8.1'
+
+  spec.files = FileList["LICENSE", "README.rdoc", "Rakefile", "ext/**/*.cpp", "ext/**/*.hpp", "spec/*"]
+
+  spec.add_development_dependency 'rspec'
+  spec.test_files = ["spec/bitfield_spec.rb"]
+
+  spec.extra_rdoc_files = %w( README.rdoc ext/bitfield/bitfield.cpp )
+  spec.rdoc_options.concat ['--main','README.rdoc']
 end
 
 # add your default gem packing task

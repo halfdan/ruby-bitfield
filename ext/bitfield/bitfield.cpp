@@ -35,6 +35,11 @@ static VALUE bf_init(VALUE self, VALUE size)
     return self;
 }
 
+/*
+ * call-seq: new(size)
+ *
+ * Creates a new BitField with the _size_ that was given.
+ */
 static VALUE bf_new(VALUE self, VALUE size)
 {
     VALUE *argv;
@@ -45,9 +50,10 @@ static VALUE bf_new(VALUE self, VALUE size)
     return self;
 }
 
-/**
- * Returns the size of the BitField
+/*
+ * call-seq: size()
  *
+ * Returns the size of the BitField
  */
 static VALUE bf_size(VALUE self)
 {
@@ -56,10 +62,11 @@ static VALUE bf_size(VALUE self)
     return INT2NUM(ptr->data.size());
 }
 
-
-/**
- * Flips the n-th bit if position is given
- * flips all bits otherwise (TODO)
+/*
+ * call-seq: flip(n=nil) -> nil
+ *
+ * Flips all bits in the BitField if _n_ is nil
+ * Flips n if n <> nil
  */
 static VALUE bf_flip(int argc, VALUE *argv, VALUE self)
 {
@@ -68,7 +75,12 @@ static VALUE bf_flip(int argc, VALUE *argv, VALUE self)
     if(argc == 1)
     {
         Check_Type(argv[0], T_FIXNUM);
-        ptr->data[FIX2INT(argv[0])].flip();
+        long pos = FIX2INT(argv[0]);
+        if(pos < 0 || pos >= ptr->data.size()) {
+          return Qfalse;
+        } else {
+            ptr->data[pos].flip();
+        }
     }
     else if(argc == 0)
     {
@@ -81,9 +93,10 @@ static VALUE bf_flip(int argc, VALUE *argv, VALUE self)
     return Qnil;
 }
 
-/**
- * Returns the number of bits that are set
+/*
+ * call-seq: count()
  *
+ * Returns the number of bits that are set
  */
 static VALUE bf_count(VALUE self)
 {
@@ -92,6 +105,16 @@ static VALUE bf_count(VALUE self)
     return INT2NUM(ptr->data.count());
 }
 
+/*
+ * call-seq:
+ *   [index]= value
+ *   [range]= value-array
+ *
+ * Element Assignment - Sets the element at _index_ or replaces the subset
+ * specified by _range_. Values can be only be positive numerics. Even
+ * values will be set to 0 (n % 2 = 0) and uneven values will be set to 1
+ * (n % 2 = 1).
+ */
 static VALUE bf_bit_set(VALUE self, VALUE position, VALUE value)
 {
     BitField *ptr;
@@ -140,6 +163,15 @@ static VALUE bf_bit_set(VALUE self, VALUE position, VALUE value)
     return Qnil;
 }
 
+/*
+ * call-seq:
+ *   [index] -> value
+ *   [range] -> new_ary
+ *
+ * Element Reference - Returns the element at _index_ or the subset
+ * specified by _range_. Negative or indices greater than the size of
+ * the BitField will be nil.
+ */
 static VALUE bf_bit_get(VALUE self, VALUE position)
 {
     BitField *ptr;
@@ -180,6 +212,13 @@ static VALUE bf_bit_get(VALUE self, VALUE position)
     }
 }
 
+/*
+ * call-seq:
+ *   inspect -> string
+ *   to_s -> string
+ *
+ * Creates a string representation of +self+.
+ */
 static VALUE bf_to_s(VALUE self)
 {
     BitField *ptr;
