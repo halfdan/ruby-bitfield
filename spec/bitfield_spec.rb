@@ -26,6 +26,14 @@ describe BitField do
     BitField.new(10).should respond_to(:count)
   end
 
+  it "has an each method" do
+    BitField.new(10).should respond_to(:each)
+  end
+
+  it "has an each_index method" do
+    BitField.new(10).should respond_to(:each_index)
+  end
+
   it "has a [] method" do
     BitField.new(10).should respond_to(:[])
   end
@@ -120,5 +128,19 @@ describe BitField, "#count" do
       obj[i] = 1
     end
     obj.count.should == 5
+  end
+end
+
+describe BitField, "#each" do
+  it "returns an enumerator if no block is given" do
+    obj = BitField.new 10
+    obj.each.is_a? Enumerator
+  end
+end
+
+describe BitField, "#each_index" do
+  it "returns an enumerator if no block is given" do
+    obj = BitField.new 10
+    obj.each_index.is_a? Enumerator
   end
 end

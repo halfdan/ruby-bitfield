@@ -205,7 +205,7 @@ static VALUE bf_bit_get(VALUE self, VALUE position)
                     if(i < 0 || i >= ptr->data.size()) {
                         rb_ary_push(range_ary, Qnil);
                     } else {
-                        rb_ary_push(range_ary, INT2NUM(ptr->data[i]));
+                        rb_ary_push(range_ary, LONG2NUM(ptr->data[i]));
                     }
                 }
         }
@@ -219,7 +219,7 @@ static VALUE bf_bit_get(VALUE self, VALUE position)
         if(pos < 0 || pos >= ptr->data.size()) {
             return Qnil;
         } else {
-            return INT2NUM(ptr->data[pos]);
+            return LONG2NUM(ptr->data[pos]);
         }
     }
 }
@@ -240,6 +240,52 @@ static VALUE bf_to_s(VALUE self)
     std::string buffer;
     to_string(ptr->data, buffer);
     return rb_str_new2(buffer.c_str());
+}
+
+
+/*
+ * call-seq:
+ *   each {|item| block } -> ary
+ *   each -> an_enumerator
+ *
+ * Calls block once for each element in +self+, passing that
+ * element as a parameter. If no block is given, an
+ * enumerator is returned instead.
+ */
+static VALUE bf_each(VALUE self)
+{
+    long i, size;
+    BitField *ptr;
+    Data_Get_Struct(self, BitField, ptr);
+    size = ptr->data.size();
+
+    RETURN_ENUMERATOR(self, 0, 0);
+    for (i=0; i<size; i++) {
+        rb_yield(bf_bit_get(self, LONG2NUM(i)));
+    }
+    return self;
+}
+
+/*
+ * call-seq:
+ *   each_index {|item| block } -> ary
+ *   each_index -> an_enumerator
+ *
+ * Same as BitField#each, but passes the index of the element
+ * instead of the element itself.
+ */
+static VALUE bf_each_index(VALUE self)
+{
+    long i, size;
+    BitField *ptr;
+    Data_Get_Struct(self, BitField, ptr);
+    size = ptr->data.size();
+
+    RETURN_ENUMERATOR(self, 0, 0);
+    for (i=0; i<size; i++) {
+        rb_yield(LONG2NUM(i));
+    }
+    return self;
 }
 
 static VALUE bf_initialize_clone(VALUE self, VALUE orig)
@@ -333,6 +379,18 @@ extern "C" {
             rb_cBitField,
             "count",
             RUBY_METHOD_FUNC(bf_count),
+            0
+        );
+        rb_define_method(
+            rb_cBitField,
+            "each",
+            RUBY_METHOD_FUNC(bf_each),
+            0
+        );
+        rb_define_method(
+            rb_cBitField,
+            "each_index",
+            RUBY_METHOD_FUNC(bf_each_index),
             0
         );
     }
