@@ -24,7 +24,7 @@ spec = Gem::Specification.new do |spec|
   spec.test_files = ["spec/bitfield_spec.rb"]
 
   spec.extra_rdoc_files = %w( README.rdoc ext/bitfield/bitfield.cpp )
-  spec.rdoc_options.concat ['--main','README.rdoc']
+  spec.rdoc_options.concat ['--main','README.rdoc', '-E cpp=c']
 end
 
 # add your default gem packing task
