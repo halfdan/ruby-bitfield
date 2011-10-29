@@ -36,6 +36,8 @@ static VALUE bf_init(VALUE self, VALUE size)
 }
 
 /*
+ * Document-method: new
+ *
  * call-seq: new(size)
  *
  * Creates a new BitField with the _size_ that was given.
@@ -51,6 +53,8 @@ static VALUE bf_new(VALUE self, VALUE size)
 }
 
 /*
+ * Document-method: size
+ *
  * call-seq: size()
  *
  * Returns the size of the BitField
@@ -63,6 +67,8 @@ static VALUE bf_size(VALUE self)
 }
 
 /*
+ * Document-method: flip
+ *
  * call-seq: flip(n=nil) -> nil
  *
  * Flips all bits in the BitField if _n_ is nil
@@ -94,6 +100,8 @@ static VALUE bf_flip(int argc, VALUE *argv, VALUE self)
 }
 
 /*
+ * Document-method: count
+ *
  * call-seq: count()
  *
  * Returns the number of bits that are set
@@ -106,6 +114,8 @@ static VALUE bf_count(VALUE self)
 }
 
 /*
+ * Document-method: []=
+ *
  * call-seq:
  *   [index]= value
  *   [range]= value-array
@@ -164,6 +174,8 @@ static VALUE bf_bit_set(VALUE self, VALUE position, VALUE value)
 }
 
 /*
+ * Document-method: []
+ *
  * call-seq:
  *   [index] -> value
  *   [range] -> new_ary
@@ -213,6 +225,8 @@ static VALUE bf_bit_get(VALUE self, VALUE position)
 }
 
 /*
+ * Document-method: to_s
+ *
  * call-seq:
  *   inspect -> string
  *   to_s -> string
@@ -268,13 +282,13 @@ extern "C" {
         rb_define_method(
             rb_cBitField,
             "initialize_clone",
-            reinterpret_cast<VALUE(*)(...)>(bf_initialize_clone),
+            RUBY_METHOD_FUNC(bf_initialize_clone),
             1
         );
         rb_define_method(
             rb_cBitField,
             "initialize_dup",
-            reinterpret_cast<VALUE(*)(...)>(bf_initialize_clone),
+            RUBY_METHOD_FUNC(bf_initialize_clone),
             1
         );
 
@@ -282,43 +296,43 @@ extern "C" {
         rb_define_method(
             rb_cBitField,
             "size",
-            reinterpret_cast<VALUE(*)(...)>(bf_size),
+            RUBY_METHOD_FUNC(bf_size),
             0
         );
         rb_define_method(
             rb_cBitField,
             "initialize",
-            reinterpret_cast<VALUE(*)(...)>(bf_init),
+            RUBY_METHOD_FUNC(bf_init),
             1
         );
         rb_define_method(
             rb_cBitField,
             "[]=",
-            reinterpret_cast<VALUE(*)(...)>(bf_bit_set),
+            RUBY_METHOD_FUNC(bf_bit_set),
             2
         );
         rb_define_method(
             rb_cBitField,
             "[]",
-            reinterpret_cast<VALUE(*)(...)>(bf_bit_get),
+            reinterpret_cast<VALUE(*)(...)>(RUBY_METHOD_FUNC(bf_bit_get)),
             1
         );
         rb_define_method(
             rb_cBitField,
             "to_s",
-            reinterpret_cast<VALUE(*)(...)>(bf_to_s),
+            RUBY_METHOD_FUNC(bf_to_s),
             0
         );
         rb_define_method(
             rb_cBitField,
             "flip",
-            reinterpret_cast<VALUE(*)(...)>(bf_flip),
+            RUBY_METHOD_FUNC(bf_flip),
             -1
         );
         rb_define_method(
             rb_cBitField,
             "count",
-            reinterpret_cast<VALUE(*)(...)>(bf_count),
+            RUBY_METHOD_FUNC(bf_count),
             0
         );
     }
