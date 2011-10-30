@@ -321,8 +321,8 @@ extern "C" {
     void Init_bitfield()
     {
         rb_cBitField = rb_define_class("BitField", rb_cObject);
-
         rb_define_alloc_func(rb_cBitField, BitField_allocate);
+        rb_include_module(rb_cBitField, rb_mEnumerable);
 
         /* We do the same for .clone and .dup */
         rb_define_method(

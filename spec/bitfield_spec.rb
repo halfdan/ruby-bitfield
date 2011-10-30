@@ -45,6 +45,10 @@ describe BitField do
   it "has an initialize_clone method" do
     BitField.new(10).should respond_to(:initialize_clone)
   end
+
+  it "is an Enumerable" do
+    BitField.include? Enumerable
+  end
 end
 
 describe BitField, "#[]" do
