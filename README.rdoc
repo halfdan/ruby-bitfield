@@ -1,7 +1,7 @@
 = BitField
 
 This C extension wraps boost::dynamic_bitset and makes it available
-as a native Ruby class. The bitset behaves like an an array allowing
+as a native Ruby class. The bitset behaves like an array allowing
 only values of 0 and 1. Using this extension is easy:
 
     b = BitField.new 10 # Initializes BitField with size 10
